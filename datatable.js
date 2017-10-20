@@ -92,11 +92,11 @@ table = {
   view: function(ctrl) {
     return m("div",{class:"overflow-auto-l m-h-500"},[m("table",{class:"near-black dt--fixed tc w-96-ns b-solid ml35-ns"}, [
       m("thead", [m("tr", [
-        m("th", {class:"border-bottom"},""),
-        m("th", {class:"border-bottom"},"Locn_Nbr"),
-        m("th", {class:"border-bottom"}, "Online_ord_Id"),
-        m("th", {class:"border-bottom"}, "KSN_Id"),
-        m("th", {class:"border-bottom"}, "SKU_Prc_Type_Cd")
+        m("th", {class:"border-bottom bg-grey-light w-10"},""),
+        m("th", {class:"border-bottom bg-grey-light w-20"},"Locn_Nbr"),
+        m("th", {class:"border-bottom bg-grey-light w-20"}, "Online_ord_Id"),
+        m("th", {class:"border-bottom bg-grey-light w-20"}, "KSN_Id"),
+        m("th", {class:"border-bottom bg-grey-light w-30"}, "SKU_Prc_Type_Cd")
       ])]),
       m("tbody", [
         ctrl.listing.list.map(function(row,index) {

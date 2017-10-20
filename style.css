@@ -42,7 +42,7 @@ table
 }
 .bg-purple 
 {
-    background-color: mediumpurple;
+    background-color: #6888e8;
 }
 .btn-border
 {
@@ -55,4 +55,8 @@ table
 .white-antique
 {
     color: antiquewhite;
+}
+.bg-grey-light 
+{
+    background-color: lightgrey;
 }
