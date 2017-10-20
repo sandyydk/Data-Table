@@ -1,0 +1,58 @@
+html 
+{
+    background-color: bisque;
+}
+.w-96-ns 
+{ 
+    width: 96%; 
+}
+.b-solid 
+{
+    border: 1px solid black;
+}
+.ml35-ns 
+{ 
+    margin-left: 1.5rem; 
+}
+td, th 
+{
+  border-left: solid 1px black;
+}
+
+table 
+{
+    border-collapse: collapse;
+}
+
+.border-bottom 
+{
+  border-bottom: solid 1px black;
+}
+.w-7-l 
+{ 
+    width: 7%; 
+}
+.fa-2x 
+{
+    font-size: 1.5em;
+}
+.m-h-500 
+{
+    max-height: 500px;
+}
+.bg-purple 
+{
+    background-color: mediumpurple;
+}
+.btn-border
+{
+    border-radius: 85px 40px 40px 100px;
+}
+.r-btn-border
+{
+    border-radius: 5px 120px 284px 61px;
+}
+.white-antique
+{
+    color: antiquewhite;
+}
