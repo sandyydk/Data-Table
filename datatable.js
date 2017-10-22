@@ -33,9 +33,16 @@ listing = {
   list: data,
   originalList : data,
   moveAheadOneRow: function(){
-    startingAt = parseInt(startingAt) + 1;
-    table.rowCount = startingAt - 1;
-    listing.listFilter();
+    if((parseInt(startingAt)) < listing.originalList.length){
+      startingAt = parseInt(startingAt) + 1;
+      table.rowCount = startingAt - 1;
+      listing.listFilter();
+    }
+    else
+    {
+      m.redraw.strategy("none");
+    }
+    
   },
   generateRandom: function(){
     // Here 2345 is just a random cap used to generate random values.
@@ -71,12 +78,19 @@ listing = {
 
   },
   moveAheadOnePage: function(){
-    startingAt = parseInt(startingAt) + parseInt(showing);
-    table.rowCount = startingAt - 1;
-    listing.listFilter();
+    if((parseInt(startingAt) + parseInt(showing)) < listing.originalList.length){
+      startingAt = parseInt(startingAt) + parseInt(showing);
+      table.rowCount = startingAt - 1;
+      listing.listFilter();
+    }
+    else
+    {
+      m.redraw.strategy("none");
+    }
+    
   },
   moveBehindOnePage: function(){
-    if((startingAt - showing) > 1){
+    if((startingAt - showing) >= 1){
       startingAt = parseInt(startingAt) - parseInt(showing);
       table.rowCount = startingAt - 1;
       listing.listFilter();
