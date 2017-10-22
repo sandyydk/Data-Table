@@ -3,7 +3,6 @@ var table, listing, app;
 var showing = 10;
 var totalRows = 10;
 var startingAt = 1;
-var currentPageIndex = 1;
 
 actionKeys = {
   controller:function(options){
@@ -16,11 +15,11 @@ actionKeys = {
       m('a', {class:"pr1 pointer", onclick: listing.moveBehindOnePage}, [m('i',{class:"fa fa-angle-double-left fa-2x white-antique"})]),
       m('a', {class:"pointer", onclick: listing.moveBehindOneRow}, [m('i',{class:"fa fa-angle-left fa-2x white-antique"})])]),
       'Showing ',
-      m('input',{type:'number', min:0, class:"w-7-l mh3" , oninput :m.withAttr("value",listing.onShowingChange),value:showing}),
+      m('input',{type:'number', min:1, class:"w-7-l mh3" , oninput :m.withAttr("value",listing.onShowingChange),value:showing}),
       'rows out of ',
-      m('input',{type:'text', min:0, class:"w-7-l mh3", disabled:true, value:totalRows}),
+      m('input',{type:'number', min:1, class:"w-7-l mh3", max:1000000,onchange:m.withAttr("value",listing.manageData),value:totalRows}),
       'starting at row ',
-      m('input',{type:'number', min:0, class:"w-7-l mh3", oninput:m.withAttr("value",listing.onStartingAtChange),value:startingAt}),
+      m('input',{type:'number', min:1, class:"w-7-l mh3", oninput:m.withAttr("value",listing.onStartingAtChange),value:startingAt}),
       m('div',{class:"di mr3-l bg-purple pt2 pr2 r-btn-border pl2"},[
       m('a', {class:"pr1 pointer", onclick: listing.moveAheadOneRow}, [m('i',{class:"fa fa-angle-right fa-2x white-antique"})]),
       m('a', {class:"pr1 pointer", onclick: listing.moveAheadOnePage}, [m('i',{class:"fa fa-angle-double-right fa-2x white-antique"})]),
@@ -38,20 +37,66 @@ listing = {
     table.rowCount = startingAt - 1;
     listing.listFilter();
   },
+  generateRandom: function(){
+    // Here 2345 is just a random cap used to generate random values.
+    return Math.floor(Math.random()* 2345);
+  },
+  manageData: function(inputValue){
+    table.rowCount = 0;
+    totalRows = inputValue;
+    if (listing.originalList.length > totalRows ){
+      listing.originalList.splice(totalRows-1,(listing.originalList.length - totalRows));   
+    } 
+    else 
+    {
+      // Generate upto a million random values
+     var newArray = Array(totalRows-listing.originalList.length).fill(0).map(listing.generateRandom);
+     // This lets you generate 1 million rows with browser crashing as DOM updation and looping don't conflict. 
+     // Tested this one out. 
+     setTimeout(() => {
+      newArray.forEach(
+        x => {
+          listing.originalList.push({locnNo: x,
+            OoId: 0,
+            KsnId: 0,
+            Sku:0});
+        }
+      );
+
+      listing.list = listing.originalList.slice(11,18);
+    },10); 
+    
+    }
+    
+
+  },
   moveAheadOnePage: function(){
     startingAt = parseInt(startingAt) + parseInt(showing);
     table.rowCount = startingAt - 1;
     listing.listFilter();
   },
   moveBehindOnePage: function(){
-    startingAt = parseInt(startingAt) - parseInt(showing);
-    table.rowCount = startingAt - 1;
-    listing.listFilter();
+    if((startingAt - showing) > 1){
+      startingAt = parseInt(startingAt) - parseInt(showing);
+      table.rowCount = startingAt - 1;
+      listing.listFilter();
+  } 
+  else
+  {
+    // To stop the redraw which causes index to jump
+     m.redraw.strategy("none");
+  }
   },
   moveBehindOneRow: function(){
-    startingAt = parseInt(startingAt) - 1;
-    table.rowCount = startingAt - 1;
-    listing.listFilter();
+    if((startingAt - showing) > 1){
+      startingAt = parseInt(startingAt) - 1;
+      table.rowCount = startingAt - 1;
+      listing.listFilter();
+    }
+    else
+    {
+      m.redraw.strategy("none");
+    }
   },
   goToLastPage: function(){
     startingAt = listing.originalList.length - showing + 1;
@@ -64,7 +109,7 @@ listing = {
     listing.listFilter();
   },
   listFilter : function(){
-    listing.list = listing.originalList.slice(startingAt-1,startingAt-1+showing*currentPageIndex);
+    listing.list = listing.originalList.slice(startingAt-1,startingAt-1+showing);
   },
   onShowingChange: function(inputValue){
     showing = inputValue;
@@ -100,7 +145,6 @@ table = {
       ])]),
       m("tbody", [
         ctrl.listing.list.map(function(row,index) {
-          
           if(index<showing ){
           return m("tr", [
             m("td", {class:"border-bottom"}, table.incrementRowCount()),
