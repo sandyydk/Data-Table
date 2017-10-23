@@ -167,12 +167,6 @@ table = {
       m("tbody", [
         ctrl.listing.list.map(function(row,index) {
           if(index<showing ){
-           /*  if(startingAt != table.rowCount && index==1){
-              console.log(startingAt);
-              console.log("INDEX:"+index);
-              console.log("ROW COUNT:"+table.rowCount);
-              table.rowCount = parseInt(startingAt)
-            } */
           return m("tr", [
             m("td", {class:"border-bottom"}, table.incrementRowCount()),
             m("td", {class:"border-bottom"}, row.locnNo),
