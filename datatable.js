@@ -127,12 +127,19 @@ listing = {
   },
   onShowingChange: function(inputValue){
     showing = inputValue;
-    table.rowCount = 0;
+    if(startingAt == 1){
+      table.rowCount = 0;
+    }
+    else
+    {
+      table.rowCount = parseInt(startingAt) - 1;
+    }
+    
     listing.listFilter();
   },
   onStartingAtChange: function(inputValue){
     startingAt = inputValue;
-    table.rowCount = 0;
+    table.rowCount = parseInt(startingAt)-1;
     listing.listFilter();
   },
 };
@@ -160,6 +167,12 @@ table = {
       m("tbody", [
         ctrl.listing.list.map(function(row,index) {
           if(index<showing ){
+           /*  if(startingAt != table.rowCount && index==1){
+              console.log(startingAt);
+              console.log("INDEX:"+index);
+              console.log("ROW COUNT:"+table.rowCount);
+              table.rowCount = parseInt(startingAt)
+            } */
           return m("tr", [
             m("td", {class:"border-bottom"}, table.incrementRowCount()),
             m("td", {class:"border-bottom"}, row.locnNo),
